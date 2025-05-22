@@ -1,6 +1,5 @@
 from transformers import pipeline
 from PIL import Image
-import sys
 from diffusers import StableDiffusionPipeline
 import torch
 import os
@@ -38,39 +37,39 @@ def main():
                         print(f"Result: {answer}")
                         break
                     else:
-                        print("Not a valid file type")
+                        print(f"Not a valid file type")
                         pass
                 except ValueError:
-                    print("Not a valid file type")
+                    print(f"Not a valid file type")
                     pass
             elif task == 1:
                 try:
                     prompt: str = input("Generate a/an? ").strip()
                     fetch = Fetch(prompt)
                     imageGenerator(fetch)
-                    print("Done generating, locate the image in the root folder")
+                    print(f"Done generating, locate the image in the root folder")
                     break
                 except ValueError:
-                    print("Not a valid input")
+                    print(f"Not a valid input")
                     pass
             else:
-                print("Not a valid input")
+                print(f"Not a valid input")
                 pass
         except ValueError:
-            print("Not a valid input")
+            print(f"Not a valid input")
             pass
 
 def checkDevice():
     if torch.cuda.is_available():
-        print("NVIDIA GPU detected. Using CUDA.")
+        print(f"NVIDIA GPU detected. Using CUDA.")
         return torch.device("cuda")
     else:
-        print("No GPU found. Using CPU.")
+        print(f"No GPU found. Using CPU.")
         return torch.device("cpu")
 
 
 def imageIdentifier(fetch: Fetch):
-    print("Setting up the environment...")
+    print(f"Setting up the environment...")
     while True:
         try:
             with Image.open(fetch._prompt) as img:
@@ -83,7 +82,7 @@ def imageIdentifier(fetch: Fetch):
                         model="Salesforce/blip-image-captioning-base",
                         device=0 if fetch._device.type == "cuda" else -1
                     )
-                    print("Generating image caption...")
+                    print(f"Generating image caption...")
                     result = itt_pipeline(image)
                     return result[0]['generated_text']
 
@@ -95,16 +94,16 @@ def imageIdentifier(fetch: Fetch):
                         device=0 if fetch._device.type == "cuda" else -1
                     )
                     question: str = input("Ask a question about the image: ")
-                    print("Generating answer...")
+                    print(f"Generating answer...")
                     result = vqa_pipeline({"image": image, "question": question})
                     return result[0]['answer']
 
                 else:
-                    print("Invalid mode selected.")
+                    print(f"Invalid mode selected.")
                     pass
 
         except FileNotFoundError:
-            print("File does not exist")
+            print(f"File does not exist")
             pass
 
 
@@ -116,12 +115,13 @@ def imageGenerator(fetch: Fetch):
     )
     ig_pipeline.to(fetch._device)
 
-    print("Image generating, this will take a while, please wait...")
+    print(f"Image generating, this will take a while, please wait...")
     image = ig_pipeline(fetch._prompt).images[0]
-    filename = fileCounter(fetch)
-    image.save(filename)
-    print(f"Image saved as: {filename}")
+    os.makedirs("generated_imgs", exist_ok=True)
 
+    filename = os.path.join("generated_imgs", fileCounter(fetch))
+    image.save(filename)
+    print(f"Image saved as: {filename} in 'generated_imgs' directory")
 
 def fileCounter(fetch: Fetch):
     while True:
