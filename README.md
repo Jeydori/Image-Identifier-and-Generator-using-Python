@@ -11,11 +11,12 @@ This project focuses on utilizing HuggingFace free AI models such as Salesforce-
 ---
 
 ### Project Directory Structure
-cs50_project
-│-- img/
-│-- project.py
-│-- test_project.py
-│-- requirements.txt
+cs50_project/
+│
+├── img/ # Folder for storing input/output images
+├── project.py # Main application logic
+├── test_project.py # Unit tests using pytest
+└── requirements.txt # Project dependencies
 
 ---
 
