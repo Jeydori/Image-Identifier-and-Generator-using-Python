@@ -12,10 +12,14 @@ def test_checkDevice():
 def test_fileCounter():
     fetch = Fetch("prompt")
     fetch._counter = 1
-    open("generated_image1.jpg", "a").close()  # create dummy file
+
+    os.makedirs("generated_imgs", exist_ok=True)
+    open(os.path.join("generated_imgs", "generated_image1.jpg"), "a").close()
+
     filename = fileCounter(fetch)
     assert filename == "generated_image2.jpg"
-    os.remove("generated_image1.jpg")
+    os.remove(os.path.join("generated_imgs", "generated_image1.jpg"))
+
 
 
 def test_imageGenerator(monkeypatch):

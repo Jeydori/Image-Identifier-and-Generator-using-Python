@@ -24,8 +24,16 @@ class Fetch:
         return self._counter
 
 def main():
+    print("\n\033[1mImidge\033[0m\n")
+    print(f"an Image Identifier and Generator cli-based application")
+    print(f"------------------------------------------------")
+    print(f"Welcome! This tool lets you:")
+    print(f"1. Identify and caption images.")
+    print(f"2. Generate realistic images from text prompts.\n")
+
     while True:
         try:
+            print(f"Please choose an option to get started:")
             task: int = int(input("Type '0' for Image Identification | Type '1' for Image Generation: \nInput: ").strip())
 
             if task == 0:
@@ -121,15 +129,20 @@ def imageGenerator(fetch: Fetch):
 
     filename = os.path.join("generated_imgs", fileCounter(fetch))
     image.save(filename)
-    print(f"Image saved as: {filename} in 'generated_imgs' directory")
+    print(f"Image saved as: {filename}")
 
 def fileCounter(fetch: Fetch):
+    os.makedirs("generated_imgs", exist_ok=True)
+
     while True:
         filename = f"generated_image{fetch._counter}.jpg"
-        if os.path.exists(filename):
+        full_path = os.path.join("generated_imgs", filename)
+
+        if os.path.exists(full_path):
             fetch._counter += 1
         else:
             return filename
+
 
 if __name__ == "__main__":
     main()

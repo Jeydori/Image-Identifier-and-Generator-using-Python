@@ -1,5 +1,5 @@
 # Image-Identifier-and-Generator-using-Python
-#### Video Demo:  <URL HERE>
+#### Video Demo:  <https://youtu.be/u47jzPVz2Po>
 #### Description: This project focuses on utilizing HuggingFace free AI models such as Salesforce-Blip and CompVis-Stable-Diffusion by integrating it in an Image Identification and Image Generation Project. The project's goal is to implement cs50's course lectures like OOP, Error Handling, Unit Testing, Loops, Conditionals, and etc.
 
 ---
